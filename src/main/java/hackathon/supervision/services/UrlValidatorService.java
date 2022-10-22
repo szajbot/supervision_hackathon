@@ -18,10 +18,10 @@ public class UrlValidatorService {
 
     private UrlNormalizator normalizedUrl;
     private ValidatorReport validatorReport;
-    public String reportValidation(String url) throws IOException {
+    public ValidatorReport reportValidation(String url) throws IOException {
         normalizedUrl = new UrlNormalizator(url);
 
-        validatorReport = ValidatorReport.builder()
+        return ValidatorReport.builder()
                 .domain(normalizedUrl.getDomain())
                 .isHttps(isHttps())
                 .isUntypicalNumsInDomain(hasManyNumbers())
@@ -30,8 +30,6 @@ public class UrlValidatorService {
                 .numberOfDigits(numberOfDigits())
                 .domainLength(normalizedUrl.getDomain().length())
                 .build();
-
-        return validatorReport.toString();
     }
 
     private boolean isHttps() {
