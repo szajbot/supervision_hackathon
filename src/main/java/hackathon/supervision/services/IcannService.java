@@ -5,13 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hackathon.supervision.model.IcannReport;
 import hackathon.supervision.model.UrlNormalizator;
 import hackathon.supervision.model.UrlRatio;
-import hackathon.supervision.model.ValidatorReport;
-import org.apache.http.util.EntityUtils;
-import org.springframework.stereotype.Service;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
+import org.springframework.stereotype.Service;
+
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -26,49 +26,53 @@ public class IcannService {
     private static final String DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss'Z'";
     private static final String API_DOMAIN = "https://rdap.verisign.com/com/v1/domain/";
     private UrlNormalizator normalizedUrl;
+    private Map<String, Object> apiResponse;
 
-    public IcannReport reportIcann(String url) throws IOException{
+    public IcannReport reportIcann(String url) throws IOException {
         normalizedUrl = new UrlNormalizator(url);
+        try {
+            apiResponse = readFromApi();
+        } catch (Exception e) {
+            return null;
+        }
 
         return IcannReport.builder()
                 .domain(normalizedUrl.getDomain())
-                .urlRatio(getRatio(url))
-                .lifeSpan(getLifeSpan(url))
-                .registrationDate(getRegistrationDate(url).toString())
-                .expirationDate(getExpirationDate(url).toString())
+                .urlRatio(getRatio())
+                .lifeSpan(getLifeSpan())
+                .registrationDate(getRegistrationDate().toString())
+                .expirationDate(getExpirationDate().toString())
                 .build();
     }
 
-    public UrlRatio getRatio(String url) throws IOException {
-        long years = getLifeSpan(url);
-        if (years == 1) {
+    public UrlRatio getRatio() throws IOException {
+        long years = getLifeSpan();
+        if (years <= 1) {
             return UrlRatio.VERY_HIGH;
-        } else if (years == 2) {
+        } else if (years <= 2) {
             return UrlRatio.HIGH;
-        } else if (years == 3) {
+        } else if (years <= 3) {
             return UrlRatio.LOW;
         }
         return UrlRatio.VERY_LOW;
     }
 
-    long getLifeSpan(String url) throws IOException {
-        LocalDateTime registrationDate = getRegistrationDate(url);
-        LocalDateTime expirationDate = getExpirationDate(url);
+    long getLifeSpan() throws IOException {
+        LocalDateTime registrationDate = getRegistrationDate();
+        LocalDateTime expirationDate = getExpirationDate();
 
         return ChronoUnit.YEARS.between(registrationDate, expirationDate);
     }
 
-    private LocalDateTime getRegistrationDate(String url) throws IOException {
-        Map<String, Object> responseMap = readFromApi();
-        String date = getDateOfType(responseMap, "registration");
+    private LocalDateTime getRegistrationDate() throws IOException {
+        String date = getDateOfType(apiResponse, "registration");
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_PATTERN);
         return LocalDateTime.parse(date, formatter);
     }
 
-    private LocalDateTime getExpirationDate(String url) throws IOException {
-        Map<String, Object> responseMap = readFromApi();
-        String date = getDateOfType(responseMap, "expiration");
+    private LocalDateTime getExpirationDate() throws IOException {
+        String date = getDateOfType(apiResponse, "expiration");
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_PATTERN);
         return LocalDateTime.parse(date, formatter);
@@ -94,6 +98,7 @@ public class IcannService {
 
         var jsonResponse = EntityUtils.toString(response.getEntity());
 
-        return new ObjectMapper().readValue(jsonResponse, new TypeReference<>() {});
+        return new ObjectMapper().readValue(jsonResponse, new TypeReference<>() {
+        });
     }
 }
