@@ -10,4 +10,5 @@ public class SupervisionApplication {
         SpringApplication.run(SupervisionApplication.class, args);
     }
 
+
 }
