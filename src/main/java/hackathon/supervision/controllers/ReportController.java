@@ -84,4 +84,10 @@ public class ReportController {
         String url = request.getRequestURI().split(request.getContextPath() + "/reportSimilarityModule/")[1];
         return ResponseEntity.ok(similarityModuleService.reportSimilarityModule(url));
     }
+
+    @RequestMapping(value = "copiedSite/**", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CopiedSiteReport> copiedSite(HttpServletRequest request) throws IOException, ExecutionException, InterruptedException {
+        String url = request.getRequestURI().split(request.getContextPath() + "/copiedSite/")[1];
+        return ResponseEntity.ok(similarityModuleService.reportCopied(url));
+    }
 }
