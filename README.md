@@ -1,1 +1,2 @@
 # supervision
+W czasie trwanie konkursu nasz zespół wystawił restowe API na które można wysłać adres url a nastpęnie na wyjściu otrzymamy raport w formie jsona zawierający wyniki każdego z modułów. Nasza ocena zagrożeń z adresu url opiera się na modułach oceniających różne aspekty danej domeny. Każdy z modułów tworzy swój własny raport a następnie na podstawie odpowiednio przypisanej im wagi tworzona jest sumaryczna punktacja oceniająca podejrzenie co do danej domeny.
