@@ -10,6 +10,7 @@ import lombok.*;
 @ToString
 public class ValidatorReport {
     private String domain;
+    private ScamPossibility scamPossibility;
     private boolean isHttps;
     private boolean isUntypicalNumsInDomain;
     private boolean isCommonTopDomain;

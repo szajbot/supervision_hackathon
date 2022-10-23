@@ -1,5 +1,6 @@
 package hackathon.supervision.services;
 
+import hackathon.supervision.model.ScamPossibility;
 import hackathon.supervision.model.UrlNormalizator;
 import hackathon.supervision.model.ValidatorReport;
 import lombok.RequiredArgsConstructor;
@@ -18,11 +19,13 @@ public class UrlValidatorService {
 
     private UrlNormalizator normalizedUrl;
     private ValidatorReport validatorReport;
+    private ScamPossibility scamPossibility;
     public ValidatorReport reportValidation(String url) throws IOException {
         normalizedUrl = new UrlNormalizator(url);
 
         return ValidatorReport.builder()
                 .domain(normalizedUrl.getDomain())
+                .scamPossibility(getRatio())
                 .isHttps(isHttps())
                 .isUntypicalNumsInDomain(hasManyNumbers())
                 .isCommonTopDomain(isCommonTopDomain())
@@ -30,6 +33,18 @@ public class UrlValidatorService {
                 .numberOfDigits(numberOfDigits())
                 .domainLength(normalizedUrl.getDomain().length())
                 .build();
+    }
+
+    private ScamPossibility getRatio() {
+        scamPossibility = ScamPossibility.VERY_LOW;
+        if(numberOfSpecialChar() > 3) scamPossibility.setRatio(scamPossibility.getRatio()+1);
+        if(numberOfDigits() > 3) scamPossibility.setRatio(scamPossibility.getRatio()+1);
+        if(hasManyNumbers()) scamPossibility.setRatio(scamPossibility.getRatio()+1);
+        if(normalizedUrl.getDomain().length() > 30) scamPossibility.setRatio(scamPossibility.getRatio()+1);
+        if(!isCommonTopDomain()) scamPossibility.setRatio(scamPossibility.getRatio()+1);
+        if(!isHttps()) scamPossibility.setRatio(scamPossibility.getRatio()+1);
+        if(scamPossibility.getRatio()>5) scamPossibility.setRatio(5);
+        return  scamPossibility;
     }
 
     private boolean isHttps() {

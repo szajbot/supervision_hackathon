@@ -17,7 +17,12 @@ public class UrlNormalizator {
         this.basicUrl = recognizeBasicUrl(url);
         this.domain = this.basicUrl.replace("www.", "");
         this.path = recognizePath(url);
-        this.topLevelDomain = String.valueOf(InternetDomainName.from(this.domain).publicSuffix());
+        try{
+            this.topLevelDomain = String.valueOf(InternetDomainName.from(this.domain).publicSuffix());
+        }catch (Exception e){
+
+        }
+
     }
 
     private String recognizePath(String url) {
@@ -26,7 +31,7 @@ public class UrlNormalizator {
 
     private String recognizeBasicUrl(String url) {
         var urlWithoutProtocol = url.replace(this.protocol, "");
-        return urlWithoutProtocol.replaceAll("\\/.+", "");
+        return urlWithoutProtocol.replaceAll("\\/.*", "");
     }
 
     private String recognizeProtocol(String url){

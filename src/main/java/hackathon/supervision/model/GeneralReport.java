@@ -9,6 +9,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 public class GeneralReport {
+    private SimilarityModuleReport similarityModuleReport;
     private ValidatorReport validatorReport;
     private IcannReport icannReport;
     private VirustotalReport virustotalReport;

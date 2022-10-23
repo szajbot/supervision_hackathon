@@ -10,7 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 public class IcannReport {
     private String domain;
-    private UrlRatio urlRatio;
+    private ScamPossibility scamPossibility;
     private long lifeSpan;
     private String registrationDate;
     private String expirationDate;

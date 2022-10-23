@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hackathon.supervision.model.IcannReport;
 import hackathon.supervision.model.UrlNormalizator;
-import hackathon.supervision.model.UrlRatio;
+import hackathon.supervision.model.ScamPossibility;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -38,23 +38,23 @@ public class IcannService {
 
         return IcannReport.builder()
                 .domain(normalizedUrl.getDomain())
-                .urlRatio(getRatio())
+                .scamPossibility(getRatio())
                 .lifeSpan(getLifeSpan())
                 .registrationDate(getRegistrationDate().toString())
                 .expirationDate(getExpirationDate().toString())
                 .build();
     }
 
-    public UrlRatio getRatio() throws IOException {
+    public ScamPossibility getRatio() throws IOException {
         long years = getLifeSpan();
         if (years <= 1) {
-            return UrlRatio.VERY_HIGH;
+            return ScamPossibility.VERY_HIGH;
         } else if (years <= 2) {
-            return UrlRatio.HIGH;
+            return ScamPossibility.HIGH;
         } else if (years <= 3) {
-            return UrlRatio.LOW;
+            return ScamPossibility.LOW;
         }
-        return UrlRatio.VERY_LOW;
+        return ScamPossibility.VERY_LOW;
     }
 
     long getLifeSpan() throws IOException {
