@@ -69,12 +69,12 @@ public class ReportController {
                 .build();
 
         if (generalReport.getSimilarityModuleReport()!=null && generalReport.getSimilarityModuleReport().getScamPossibility() == ScamPossibility.ZERO) generalReport.setValue(0);
-   else if (generalReport.getSimilarityModuleReport()!=null && generalReport.getSimilarityModuleReport().getScamPossibility() == ScamPossibility.VERY_HIGH) generalReport.setValue(100);
    else if (generalReport.getVirustotalReport()!=null       && generalReport.getVirustotalReport().getScamPossibility() == ScamPossibility.VERY_HIGH) generalReport.setValue(100);
    else if (generalReport.getVirustotalReport()!=null       && generalReport.getVirustotalReport().getScamPossibility() == ScamPossibility.HIGH) generalReport.setValue(90);
    else if (generalReport.getIcannReport()!=null            && generalReport.getIcannReport().getScamPossibility() == ScamPossibility.VERY_HIGH) generalReport.setValue(80);
    else if (generalReport.getIcannReport()!=null            && generalReport.getIcannReport().getScamPossibility() == ScamPossibility.HIGH) generalReport.setValue(70);
    else if (generalReport.getChanceToBeCopied()!=null       && generalReport.getChanceToBeCopied().getResult().getGrade() < 100) generalReport.setValue(70);
+   else if (generalReport.getSimilarityModuleReport()!=null && generalReport.getSimilarityModuleReport().getScamPossibility() == ScamPossibility.VERY_HIGH) generalReport.setValue(60);
    else if (generalReport.getValidatorReport()!=null        && generalReport.getValidatorReport().getScamPossibility() == ScamPossibility.VERY_HIGH) generalReport.setValue(60);
    else if (generalReport.getValidatorReport()!=null        && generalReport.getValidatorReport().getScamPossibility() == ScamPossibility.HIGH) generalReport.setValue(50);
    else if (generalReport.getValidatorReport()!=null        && generalReport.getValidatorReport().getScamPossibility() == ScamPossibility.MEDIUM) generalReport.setValue(40);
