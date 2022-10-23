@@ -20,6 +20,7 @@ public class UrlValidatorService {
     private UrlNormalizator normalizedUrl;
     private ValidatorReport validatorReport;
     private ScamPossibility scamPossibility;
+
     public ValidatorReport reportValidation(String url) throws IOException {
         normalizedUrl = new UrlNormalizator(url);
 
@@ -36,23 +37,30 @@ public class UrlValidatorService {
     }
 
     private ScamPossibility getRatio() {
-        scamPossibility = ScamPossibility.VERY_LOW;
-        if(numberOfSpecialChar() > 3) scamPossibility.setRatio(scamPossibility.getRatio()+1);
-        if(numberOfDigits() > 3) scamPossibility.setRatio(scamPossibility.getRatio()+1);
-        if(hasManyNumbers()) scamPossibility.setRatio(scamPossibility.getRatio()+1);
-        if(normalizedUrl.getDomain().length() > 30) scamPossibility.setRatio(scamPossibility.getRatio()+1);
-        if(!isCommonTopDomain()) scamPossibility.setRatio(scamPossibility.getRatio()+1);
-        if(!isHttps()) scamPossibility.setRatio(scamPossibility.getRatio()+1);
-        if(scamPossibility.getRatio()>5) scamPossibility.setRatio(5);
-        return  scamPossibility;
+        int result = 1;
+        if (numberOfSpecialChar() > 3) result++;
+        if (numberOfDigits() > 3) result++;
+        if (hasManyNumbers()) result++;
+        if (normalizedUrl.getDomain().length() > 30) result++;
+        if (!isCommonTopDomain()) result++;
+        if (!isHttps()) result++;
+        if (result >= 5) {
+            return ScamPossibility.VERY_HIGH;
+        }
+        if (result == 4) {
+            return ScamPossibility.HIGH;
+        }
+        if (result == 3) {
+            return ScamPossibility.MEDIUM;
+        }
+        if (result == 2) {
+            return ScamPossibility.LOW;
+        }
+        return ScamPossibility.VERY_LOW;
     }
 
     private boolean isHttps() {
-        if(normalizedUrl.getProtocol().equals("https://")){
-            return true;
-        }
-        return false;
-
+        return normalizedUrl.getProtocol().equals("https://");
     }
 
     private int numberOfSpecialChar() {
@@ -77,7 +85,7 @@ public class UrlValidatorService {
 
     public boolean isCommonTopDomain() {
         List<String> list = new ArrayList<>();
-        if(!canFileRead(list)){
+        if (!canFileRead(list)) {
             return false;
         }
         return list.contains(normalizedUrl.getTopLevelDomain());
@@ -87,7 +95,7 @@ public class UrlValidatorService {
         try {
             Scanner s = new Scanner(ResourceUtils.getFile("classpath:domains.txt"));
             while (s.hasNextLine()) {
-                list.add(s.nextLine().replace(".",""));
+                list.add(s.nextLine().replace(".", ""));
             }
             s.close();
         } catch (FileNotFoundException ex) {
