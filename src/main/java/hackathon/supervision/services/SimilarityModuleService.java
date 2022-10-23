@@ -63,11 +63,8 @@ public class SimilarityModuleService {
 
         String result = refMap.entrySet().stream().max((e1,e2)->e1.getValue()>e2.getValue() ? 1 : -1).get().getKey();
 
-
-        double similarity = 0.95;
-        boolean flag = true;
         List<String> test = new ArrayList<>();
-        test.add(result);
+        test.add(new UrlNormalizator(result).getDomain());
 
         return CopiedSiteReport.builder()
                 .domain(normalizedUrl.getDomain())
