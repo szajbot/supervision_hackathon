@@ -169,7 +169,14 @@
 .nu
 .nz
 .om
+.com
 .org
+.net
+.edu
+.gov
+.mil
+.bank
+.biz
 .pa
 .pe
 .pf
