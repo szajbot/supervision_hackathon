@@ -61,15 +61,20 @@ public class SimilarityModuleService {
             }
         }
 
-        String result = refMap.entrySet().stream().max((e1,e2)->e1.getValue()>e2.getValue() ? 1 : -1).get().getKey();
+        try {
+            String result = refMap.entrySet().stream().max((e1, e2) -> e1.getValue() > e2.getValue() ? 1 : -1).get().getKey();
 
-        List<String> test = new ArrayList<>();
-        test.add(new UrlNormalizator(result).getDomain());
+            List<String> test = new ArrayList<>();
+            test.add(new UrlNormalizator(result).getDomain());
 
-        return CopiedSiteReport.builder()
-                .domain(normalizedUrl.getDomain())
-                .result(getScale(normalizedUrl.getDomain(),test))
-                .build();
+            return CopiedSiteReport.builder()
+                    .domain(normalizedUrl.getDomain())
+                    .result(getScale(normalizedUrl.getDomain(), test))
+                    .build();
+        }
+        catch (Exception e){
+            return null;
+        }
     }
 
         private ScamPossibility getRatio (SimilarityModuleReport report){
