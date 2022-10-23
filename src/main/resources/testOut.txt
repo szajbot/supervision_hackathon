@@ -1,0 +1,2 @@
+RaportResult(domain=r7m.worldmarketing.solutions, value=100)
+RaportResult(domain=google.com, value=30)

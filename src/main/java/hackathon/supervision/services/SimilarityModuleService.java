@@ -44,15 +44,15 @@ public class SimilarityModuleService {
         normalizedUrl = new UrlNormalizator(address);
 
         URI url = null;
+        Elements links = null;
         try {
             url = new URI(address);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
+            links = Jsoup.connect(url.toString()).get().select("a[href]");
+        } catch (Exception e) {
+            return null;
         }
 
-        Elements links = Jsoup.connect(url.toString()).get().select("a[href]");
         Map<String, Integer> refMap = new HashMap<>();
-
         for (Element link : links) {
             try {
                 URI tmp = new URI(link.attr("abs:href"));

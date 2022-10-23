@@ -43,7 +43,7 @@ public class ReportController {
 
             RaportResult result = RaportResult.builder().domain(normalized.getDomain()).value(report.getValue()).build();
             reports.add(result);
-            buffer.write(result.toString());
+            buffer.write(result.toString()+"\n");
         }
 
         buffer.close();
