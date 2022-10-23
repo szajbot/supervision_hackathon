@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 public enum ScamPossibility {
+    ZERO(0),
     VERY_LOW(1),
     LOW(2),
     MEDIUM(3),

@@ -1,11 +1,13 @@
 package hackathon.supervision.services;
 
+import hackathon.supervision.model.ScamPossibility;
 import hackathon.supervision.model.SimilarityModuleReport;
 import hackathon.supervision.model.SimilarityScale;
 import hackathon.supervision.model.UrlNormalizator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.naming.SizeLimitExceededException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -24,13 +26,27 @@ public class SimilarityModuleService {
         normalizedUrl = new UrlNormalizator(url);
         reportedDomains = loadUrlList("src/main/resources/reportedDomains.txt");
         verifiedDomains = loadUrlList("src/main/resources/verifiedDomains.txt");
+//        reportedDomains = loadUrlList("src/main/resources/reportedDomainsWithoutTest.txt");
+//        verifiedDomains = loadUrlList("src/main/resources/verifiedDomainsWithoutTest.txt");
 
-        return SimilarityModuleReport.builder()
+        SimilarityModuleReport similarityModuleReport = SimilarityModuleReport.builder()
                 .domain(normalizedUrl.getDomain())
                 .numOfSimilarities(getNumberOfSimilarities())
                 .verifiedDatabaseGrade(getScale(normalizedUrl.getDomain(), verifiedDomains))
                 .reportedDatabaseGrade(getScale(normalizedUrl.getDomain(), reportedDomains))
                 .build();
+
+        similarityModuleReport.setScamPossibility(getRatio(similarityModuleReport));
+        return similarityModuleReport;
+    }
+
+    private ScamPossibility getRatio(SimilarityModuleReport report) {
+        if(report.getVerifiedDatabaseGrade() == SimilarityScale.CONFIDENT) return ScamPossibility.ZERO;
+        if(report.getVerifiedDatabaseGrade() == SimilarityScale.HIGH || report.getReportedDatabaseGrade() == SimilarityScale.CONFIDENT) return ScamPossibility.VERY_HIGH;
+        if(report.getNumOfSimilarities() > 10) return ScamPossibility.HIGH;
+        if(report.getNumOfSimilarities() > 5) return ScamPossibility.MEDIUM;
+        if(report.getReportedDatabaseGrade().getGrade() > 70) return ScamPossibility.LOW;
+        return ScamPossibility.VERY_LOW;
     }
 
     private static SimilarityScale getScale(String url, List<String> domains) {

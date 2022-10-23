@@ -12,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 public class VirustotalReport {
     private String domain;
+    private ScamPossibility scamPossibility;
     private VirustotalSummary virustotalSummary;
 //    private List<VirustotalEngineResponse> suspiciousResponses;
 }

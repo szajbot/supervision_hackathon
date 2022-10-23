@@ -3,6 +3,7 @@ package hackathon.supervision.controllers;
 import hackathon.supervision.model.*;
 import hackathon.supervision.services.IcannService;
 import hackathon.supervision.services.SimilarityModuleService;
+import hackathon.supervision.services.UrlValidatorService;
 import hackathon.supervision.services.VirustotalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -10,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import hackathon.supervision.services.UrlValidatorService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -25,7 +25,7 @@ public class ReportController {
     private final SimilarityModuleService similarityModuleService;
 
     @RequestMapping(value = "result/**", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Integer> result(HttpServletRequest request) throws IOException, ExecutionException, InterruptedException {
+    public ResponseEntity<RaportResult> result(HttpServletRequest request) throws IOException, ExecutionException, InterruptedException {
         String url = request.getRequestURI().split(request.getContextPath() + "/result/")[1];
         GeneralReport generalReport = GeneralReport.builder()
                 .similarityModuleReport(similarityModuleService.reportSimilarityModule(url))
@@ -33,7 +33,20 @@ public class ReportController {
                 .icannReport(icannService.reportIcann(url))
                 .virustotalReport(virustotalService.reportVirustotal(url))
                 .build();
-        return ResponseEntity.ok(10);
+
+             if (generalReport.getSimilarityModuleReport()!=null && generalReport.getSimilarityModuleReport().getScamPossibility() == ScamPossibility.ZERO) generalReport.setValue(0);
+        else if (generalReport.getSimilarityModuleReport()!=null && generalReport.getSimilarityModuleReport().getScamPossibility() == ScamPossibility.VERY_HIGH) generalReport.setValue(100);
+        else if (generalReport.getVirustotalReport()!=null       && generalReport.getVirustotalReport().getScamPossibility() == ScamPossibility.VERY_HIGH) generalReport.setValue(100);
+        else if (generalReport.getVirustotalReport()!=null       && generalReport.getVirustotalReport().getScamPossibility() == ScamPossibility.HIGH) generalReport.setValue(90);
+        else if (generalReport.getIcannReport()!=null            && generalReport.getIcannReport().getScamPossibility() == ScamPossibility.VERY_HIGH) generalReport.setValue(80);
+        else if (generalReport.getIcannReport()!=null            && generalReport.getIcannReport().getScamPossibility() == ScamPossibility.HIGH) generalReport.setValue(70);
+        else if (generalReport.getValidatorReport()!=null        && generalReport.getValidatorReport().getScamPossibility() == ScamPossibility.VERY_HIGH) generalReport.setValue(60);
+        else if (generalReport.getValidatorReport()!=null        && generalReport.getValidatorReport().getScamPossibility() == ScamPossibility.HIGH) generalReport.setValue(50);
+        else if (generalReport.getValidatorReport()!=null        && generalReport.getValidatorReport().getScamPossibility() == ScamPossibility.MEDIUM) generalReport.setValue(40);
+        else if (generalReport.getValidatorReport()!=null        && generalReport.getValidatorReport().getScamPossibility() == ScamPossibility.LOW) generalReport.setValue(30);
+        else generalReport.setValue(20);
+
+        return ResponseEntity.ok(RaportResult.builder().domain(url).value(generalReport.getValue()).build());
     }
 
     @RequestMapping(value = "report/**", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

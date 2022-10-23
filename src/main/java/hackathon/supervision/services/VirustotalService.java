@@ -3,6 +3,7 @@ package hackathon.supervision.services;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hackathon.supervision.model.ScamPossibility;
 import hackathon.supervision.model.UrlNormalizator;
 import hackathon.supervision.model.VirustotalReport;
 import hackathon.supervision.model.VirustotalSummary;
@@ -20,17 +21,30 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class VirustotalService {
 
-    String api_key = "13a09b8fdbd061baef8d959fe8a5ec70f032ac2853999dc6682440a9edb9dd06";
+    String api_key = "64e6e9ee72dea9ddacad6e7028ecddba85e7b3e1a5ff9132c1503e97c1ce0e8e";
     private UrlNormalizator normalizedUrl;
     private VirustotalReport virustotalReport;
 
     public VirustotalReport reportVirustotal(String url) throws IOException, ExecutionException, InterruptedException {
         normalizedUrl = new UrlNormalizator(url);
+        try {
+            return VirustotalReport.builder()
+                    .domain(normalizedUrl.getDomain())
+                    .scamPossibility(getRatio(url))
+                    .virustotalSummary(getAnalysReportApi(getIdUrl(url)))
+                    .build();
+        } catch (Exception e) {
 
-        return VirustotalReport.builder()
-                .domain(normalizedUrl.getDomain())
-                .virustotalSummary(getAnalysReportApi(getIdUrl(url)))
-                .build();
+        }
+        return null;
+
+    }
+
+    private ScamPossibility getRatio(String url) throws JsonProcessingException, ExecutionException, InterruptedException {
+        VirustotalSummary x = getAnalysReportApi(getIdUrl(url));
+        if (x.getMalicious() > 0) return ScamPossibility.VERY_HIGH;
+        if (x.getSuspicious() > 0) return ScamPossibility.HIGH;
+        return ScamPossibility.VERY_LOW;
     }
 
     public String getIdUrl(String url) throws JsonProcessingException {

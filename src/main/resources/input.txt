@@ -1,0 +1,165 @@
+0lx-storeinform.3069999.xyz
+{
+  "similarityModuleReport": {
+    "domain": "0lx-storeinform.3069999.xyz",
+    "scamPossibility": "VERY_LOW",
+    "numOfSimilarities": 0,
+    "verifiedDatabaseGrade": "MEDIUM",
+    "reportedDatabaseGrade": "MEDIUM"
+  },
+  "validatorReport": {
+    "domain": "0lx-storeinform.3069999.xyz",
+    "scamPossibility": "VERY_HIGH",
+    "numberOfSpecialChar": 3,
+    "numberOfDigits": 8,
+    "domainLength": 27,
+    "https": false,
+    "untypicalNumsInDomain": true,
+    "commonTopDomain": false
+  },
+  "icannReport": null,
+  "virustotalReport": {
+    "domain": "0lx-storeinform.3069999.xyz",
+    "scamPossibility": "VERY_HIGH",
+    "virustotalSummary": {
+      "harmless": 65,
+      "malicious": 13,
+      "suspicious": 0,
+      "undetected": 12,
+      "timeout": 0
+    }
+  }
+}
+
+
+1np0st.sitepageform.xyz
+{
+  "similarityModuleReport": {
+    "domain": "1np0st.sitepageform.xyz",
+    "scamPossibility": "VERY_LOW",
+    "numOfSimilarities": 0,
+    "verifiedDatabaseGrade": "MEDIUM",
+    "reportedDatabaseGrade": "MEDIUM"
+  },
+  "validatorReport": {
+    "domain": "1np0st.sitepageform.xyz",
+    "scamPossibility": "MEDIUM",
+    "numberOfSpecialChar": 2,
+    "numberOfDigits": 2,
+    "domainLength": 23,
+    "https": false,
+    "untypicalNumsInDomain": false,
+    "commonTopDomain": false
+  },
+  "icannReport": null,
+  "virustotalReport": {
+    "domain": "1np0st.sitepageform.xyz",
+    "scamPossibility": "VERY_HIGH",
+    "virustotalSummary": {
+      "harmless": 70,
+      "malicious": 7,
+      "suspicious": 1,
+      "undetected": 12,
+      "timeout": 0
+    }
+  }
+}
+instagram-ai.blogspot.com
+randoms001.s3.au-syd.cloud-object-storage.appdomain.cloud
+http://www.bswisznice.pl/
+{
+  "similarityModuleReport": {
+    "domain": "bswisznice.pl",
+    "scamPossibility": "VERY_LOW",
+    "numOfSimilarities": 0,
+    "verifiedDatabaseGrade": "CONFIDENT",
+    "reportedDatabaseGrade": "MEDIUM"
+  },
+  "validatorReport": {
+    "domain": "bswisznice.pl",
+    "scamPossibility": "LOW",
+    "numberOfSpecialChar": 1,
+    "numberOfDigits": 0,
+    "domainLength": 13,
+    "https": false,
+    "untypicalNumsInDomain": false,
+    "commonTopDomain": true
+  },
+  "icannReport": null,
+  "virustotalReport": {
+    "domain": "bswisznice.pl",
+    "scamPossibility": "VERY_LOW",
+    "virustotalSummary": {
+      "harmless": 81,
+      "malicious": 0,
+      "suspicious": 0,
+      "undetected": 11,
+      "timeout": 0
+    }
+  }
+}
+http://www.bszuromin.pl/
+http://www.powislanski.pl/
+{
+  "similarityModuleReport": {
+    "domain": "powislanski.pl",
+    "scamPossibility": "VERY_LOW",
+    "numOfSimilarities": 0,
+    "verifiedDatabaseGrade": "CONFIDENT",
+    "reportedDatabaseGrade": "MEDIUM"
+  },
+  "validatorReport": {
+    "domain": "powislanski.pl",
+    "scamPossibility": "LOW",
+    "numberOfSpecialChar": 1,
+    "numberOfDigits": 0,
+    "domainLength": 14,
+    "https": false,
+    "untypicalNumsInDomain": false,
+    "commonTopDomain": true
+  },
+  "icannReport": null,
+  "virustotalReport": {
+    "domain": "powislanski.pl",
+    "scamPossibility": "VERY_LOW",
+    "virustotalSummary": {
+      "harmless": 79,
+      "malicious": 0,
+      "suspicious": 0,
+      "undetected": 8,
+      "timeout": 0
+    }
+  }
+}
+http://www.bsrybnik.pl/
+{
+  "similarityModuleReport": {
+    "domain": "bsrybnik.pl",
+    "scamPossibility": "VERY_LOW",
+    "numOfSimilarities": 0,
+    "verifiedDatabaseGrade": "CONFIDENT",
+    "reportedDatabaseGrade": "MEDIUM"
+  },
+  "validatorReport": {
+    "domain": "bsrybnik.pl",
+    "scamPossibility": "LOW",
+    "numberOfSpecialChar": 1,
+    "numberOfDigits": 0,
+    "domainLength": 11,
+    "https": false,
+    "untypicalNumsInDomain": false,
+    "commonTopDomain": true
+  },
+  "icannReport": null,
+  "virustotalReport": {
+    "domain": "bsrybnik.pl",
+    "scamPossibility": "VERY_LOW",
+    "virustotalSummary": {
+      "harmless": 58,
+      "malicious": 0,
+      "suspicious": 0,
+      "undetected": 9,
+      "timeout": 0
+    }
+  }
+}
